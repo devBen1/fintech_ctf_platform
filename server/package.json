@@ -1,0 +1,90 @@
+{
+  "name": "brighterfutures",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/init.js",
+  "scripts": {
+    "remove:build": "npx rimraf build",
+    "start": "nodemon",
+    "build": "npm run remove:build && npx tsc",
+    "build-watch": "npm run remove:build && npx tsc --watch",
+    "dev": "concurrently \"npm run remove:build && npx tsc --watch\" \"nodemon -q build/src/init.js\"",
+    "devWatch": "npm run build && npm run start",
+    "migrate:up": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
+    "seeders:up": "npx sequelize-cli db:seed:all",
+    "seeders:undo": "npx sequelize-cli db:seed:undo:all",
+    "database:generate": "npm run migrate:undo && npm run migrate:up && npm run seeders:undo && npm run seeders:up",
+    "test": "jest --detectOpenHandles",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand --detectOpenHandles",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "nodemonConfig": {
+    "delay": 100,
+    "watch": [
+      "src"
+    ],
+    "ext": "ts,json",
+    "ignore": [
+      "src/**/*.spec.ts"
+    ],
+    "exec": "ts-node --files ./src/init.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.15",
+    "@types/node": "^18.11.17",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-validator": "^6.14.2",
+    "helmet": "^6.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.28.0",
+    "sequelize-typescript": "^2.1.5",
+    "sqlite3": "^5.1.4",
+    "typescript": "^4.9.4",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.13",
+    "@types/faker": "^5.5.0",
+    "@types/jest": "^29.2.4",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/supertest": "^2.0.12",
+    "@types/uuid": "^9.0.0",
+    "dotenv": "^16.0.3",
+    "faker": "^5.5.0",
+    "jest": "^29.3.1",
+    "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.5.2",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
